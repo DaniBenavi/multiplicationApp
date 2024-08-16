@@ -3,9 +3,9 @@ import { yarg } from './config/plugins/args.plugin'
 
 console.log(yarg)
 
-const { b: base, l: limit, s: showTable } = yarg
+const { b: base, l: limit, s: showTable, n: name, d: destination } = yarg
 
-const headerMessage = `Tabla del 5 \n\n`
+const headerMessage = `${name} ${base} \n\n`
 
 let resultado = ''
 
@@ -18,9 +18,3 @@ const outPutMessage = headerMessage + resultado
 if (showTable) {
   console.log(outPutMessage)
 }
-
-const pathOutPut = 'outputs'
-
-fs.mkdirSync(pathOutPut, { recursive: true })
-
-fs.writeFileSync(`${pathOutPut}/tabla-${base}.txt`, outPutMessage)
