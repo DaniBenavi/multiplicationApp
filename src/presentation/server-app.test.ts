@@ -23,7 +23,8 @@ describe('Server app', () => {
   })
 
   test('should run ServerApp with options', () => {
-    const logSpy = jest.spyOn(console, 'log')
+    /**
+  const logSpy = jest.spyOn(console, 'log')
     const createTableSpy = jest.spyOn(CreateTable.prototype, 'execute')
     const saveFileSpy = jest.spyOn(SaveFile.prototype, 'execute')
 
@@ -45,5 +46,31 @@ describe('Server app', () => {
       fileDestination: options.fileDestination,
       fileName: options.fileName
     })
+ */
+  })
+
+  test('should with custom mocks', () => {
+    const logMock = jest.fn()
+    const logErrorMock = jest.fn()
+    const createMock = jest.fn().mockReturnValue('1 x 2 = 2')
+    const saveFileMock = jest.fn().mockReturnValue(false)
+
+    console.log = logMock
+    console.error = logErrorMock
+    CreateTable.prototype.execute = createMock
+    SaveFile.prototype.execute = saveFileMock
+
+    ServerApp.run(options)
+
+    expect(logMock).toHaveBeenCalledWith('Server running')
+    expect(createMock).toHaveBeenCalledWith({ base: options.base, limit: options.limit })
+    expect(saveFileMock).toHaveBeenCalledWith({
+      fileContent: '1 x 2 = 2',
+      fileDestination: options.fileDestination,
+      fileName: options.fileName
+    })
+
+    // expect(logMock).toHaveBeenCalledWith('File created')
+    expect(logErrorMock).not.toHaveBeenCalledWith()
   })
 })
